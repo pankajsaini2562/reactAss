@@ -19,7 +19,10 @@ const FormBuilder = () => {
     const newComponent = <Component key={components.length} label={label} />;
     setComponents([...components, newComponent]);
   };
-
+  const renderComponent = (component) => {
+    const Component = component.type;
+    return <Component key={component.label} label={component.label} />;
+  };
   return (
     <div className="flex">
       <div className="w-1/4 p-4 bg-gray-200 rounded-md">
@@ -50,16 +53,31 @@ const FormBuilder = () => {
         </button>
       </div>
 
-      <div className="w-3/4 p-4 bg-white rounded-md shadow-md">
-        <h2 className="font-bold mb-4">Your Form</h2>
-        {components.map((component, index) => (
-          <DraggableComponent
-            key={index}
-            component={component}
-            index={index}
-            moveComponent={moveComponent}
-          />
-        ))}
+      <div className="w-full lg:w-3/4 p-4 bg-white rounded-md shadow-md mt-4 lg:mt-0">
+        <h2 className="font-bold mb-4">Form Builder</h2>
+        <div className="mb-4">
+          <h3 className="font-semibold text-lg">Live Preview</h3>
+        </div>
+        <div>
+          {components.map((component, index) => (
+            <DraggableComponent
+              key={index}
+              component={renderComponent(component)}
+              index={index}
+              moveComponent={moveComponent}
+            />
+          ))}
+        </div>
+        <div className="mt-4 border-t pt-4">
+          <h3 className="font-semibold text-lg">Form Output</h3>
+          <form className="mt-2">
+            {components.map((component, index) => (
+              <div key={index} className="mb-4">
+                {renderComponent(component)}
+              </div>
+            ))}
+          </form>
+        </div>
       </div>
     </div>
   );
